@@ -1,0 +1,33 @@
+{
+  "name": "laracasts-testing-vue",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha-webpack --webpack-config webpack.config.js --require test/setup.js test/*.spec.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ryangr0/laracasts-testing-vue.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Ryangr0/laracasts-testing-vue/issues"
+  },
+  "homepage": "https://github.com/Ryangr0/laracasts-testing-vue#readme",
+  "devDependencies": {
+    "expect": "^22.0.3",
+    "jsdom": "^11.5.1",
+    "jsdom-global": "^3.0.2",
+    "mocha": "^4.1.0",
+    "mocha-webpack": "^1.0.1",
+    "vue-template-compiler": "^2.5.13",
+    "vue-test-utils": "^1.0.0-beta.9",
+    "webpack": "^3.10.0"
+  },
+  "dependencies": {
+    "vue": "^2.5.13"
+  }
+}
