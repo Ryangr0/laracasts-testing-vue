@@ -21,7 +21,10 @@
             expiredText: { default: 'Expired!' }
         },
         data () {
-            return { now: new Date() }
+            return {
+                now: new Date(),
+                updateTimeInterval: null
+            }
         },
         computed: {
             finished() {
@@ -37,13 +40,16 @@
             }
         },
         created () {
-            let updateTime = setInterval(() => {
+            this.updateTimeInterval = setInterval(() => {
                 this.now = new Date();
             }, 1000);
 
             this.$on('finished', () => {
-                clearInterval(updateTime);
+                clearInterval(this.updateTimeInterval);
             });
+        },
+        destroyed() {
+            clearInterval(this.updateTimeInterval);
         }
     }
 </script>

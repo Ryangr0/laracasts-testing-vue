@@ -24,58 +24,45 @@ describe('Countdown', () => {
         see('10 Seconds');
     });
 
-    it('should reduce by one second, every second', function (done) {
+    it('should reduce by one second, every second', async () => {
 
         see('10 Seconds');
 
         clock.tick(1000);
 
-        assertOnNextTick(() => {
-            see('9 Seconds');
-        }, done);
+        await wrapper.vm.$nextTick();
+
+        see('9 Seconds');
     });
 
-    it('should expire with custom text after reaching 0 seconds', (done) => {
+    it('should expire with custom text after reaching 0 seconds', async () => {
         wrapper.setProps({ expiredText: 'Contest is over!' });
 
         see('10 Seconds');
 
         clock.tick(10000);
 
-        assertOnNextTick(() => {
-            see('Contest is over!');
-        }, done);
+        await wrapper.vm.$nextTick();
+
+        see('Contest is over!');
     });
 
-    it('should broadcast when the countdown is finished', (done) => {
+    it('should broadcast when the countdown is finished', async () => {
         clock.tick(10000);
 
-        assertOnNextTick(() => {
-            expectEvent('finished');
-        }, done);
+        await wrapper.vm.$nextTick();
+        expectEvent('finished');
     });
 
-    it('should clear the interval after countdown is finished', function (done) {
-
+    it('should clear the interval after countdown is finished', async () => {
         clock.tick(10000);
         expect(wrapper.vm.now.getSeconds()).toBe(10);
 
-        assertOnNextTick(() => {
-            clock.tick(10000);
-            expect(wrapper.vm.now.getSeconds()).toBe(10);
-        }, done);
-    });
+        await wrapper.vm.$nextTick();
 
-    let assertOnNextTick = (callback, done) => {
-        wrapper.vm.$nextTick(() => {
-            try {
-                callback();
-                done();
-            } catch (e) {
-                done(e);
-            }
-        });
-    };
+        clock.tick(10000);
+        expect(wrapper.vm.now.getSeconds()).toBe(10);
+    });
 
     let expectEvent = (event) => {
         expect(wrapper.emitted()[event]).toBeTruthy();
