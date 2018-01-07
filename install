@@ -1,0 +1,2 @@
+docker pull node:9.3
+docker run --rm -v $(pwd):/app -w /app node npm install
