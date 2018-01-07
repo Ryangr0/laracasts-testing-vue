@@ -1,6 +1,7 @@
 import { mount } from 'vue-test-utils';
 import expect from 'expect';
 import Question from '../src/components/Question.vue';
+import moxios from 'moxios';
 
 describe('Question', () => {
     let wrapper;
@@ -13,6 +14,12 @@ describe('Question', () => {
                 }
             }
         });
+        
+        moxios.install();
+    });
+
+    afterEach(() => {
+        moxios.uninstall();
     });
 
     it('presents the title and the body', () => {
@@ -33,18 +40,29 @@ describe('Question', () => {
         expect(wrapper.contains('button#edit')).toBe(false);
     });
 
-    it('should update the question after being edited', () => {
+    it('should update the question after being edited', (done) => {
         click('button#edit');
 
         type('input[name=title]', 'New title');
         type('textarea[name=body]', 'New body');
 
+        moxios.stubRequest('questions/1',{
+            status: 200,
+            response: {
+                title: 'New title',
+                body: 'New body'
+            }
+        });
+
         click('button#update');
 
-        expect(wrapper.vm.editing).toBe(false);
-
-        see('New title', 'h1');
-        see('New body', '.body');
+        moxios.wait(() => {
+            expect(wrapper.vm.editing).toBe(false);
+            see('New title', 'h1');
+            see('New body', '.body');
+            see('Your question has been updated!');
+            done();
+        })
     });
 
     it('should be able to cancel out of edit mode', function () {
